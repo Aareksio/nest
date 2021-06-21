@@ -55,20 +55,7 @@ export class ClassSerializerInterceptor implements NestInterceptor {
     if (!isObject(response) && !isArray) {
       return response;
     }
-    return isArray
-      ? (response as PlainLiteralObject[]).map(item =>
-          this.transformToPlain(item, options),
-        )
-      : this.transformToPlain(response, options);
-  }
-
-  transformToPlain(
-    plainOrClass: any,
-    options: ClassTransformOptions,
-  ): PlainLiteralObject {
-    return plainOrClass && plainOrClass.constructor !== Object
-      ? classTransformer.classToPlain(plainOrClass, options)
-      : plainOrClass;
+    return classTransformer.classToPlain(response, options)
   }
 
   protected getContextOptions(
